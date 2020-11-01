@@ -3,7 +3,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { createStackNavigator } from '@react-navigation/stack';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -11,10 +13,12 @@ import MapScreen from './screens/MapScreen';
 import DeckScreen from './screens/DeckScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import ReviewScreen from './screens/ReviewScreen';
+import { color } from 'react-native-reanimated';
 
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function App() {
   return (
@@ -37,6 +41,9 @@ function App() {
         <Tab.Screen 
           name="main" 
           component={MainTabNavigator} 
+          options={{
+            tabBarLabel: 'Main',
+          }}
         />
 
       </Tab.Navigator>
@@ -61,10 +68,47 @@ function MainTabNavigator() {
           tabBarLabel: 'Deck',
         }}
       />
+      <Tab.Screen 
+        name="review" 
+        component={ReviewStack} 
+        options={{
+          tabBarLabel: 'Review',
+        }}
+     />         
     </Tab.Navigator>
   );
 }
 
+
+function ReviewStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name='review' 
+        component={ReviewScreen} 
+        options={ ({navigation}) => ({
+          headerRight: () => (
+            <Button 
+              icon={
+                <Icon
+                  name="arrow-right"
+                  size={15}
+                  color="white"
+                />
+              }
+              title='Settings'
+              onPress={() => navigation.navigate('settings')}
+            />
+
+          ),
+          headerTitle: 'Review Jobs'
+           
+        })}
+      />
+      <Stack.Screen name='settings' component={SettingsScreen} />
+    </Stack.Navigator> 
+  );
+}
 
 export default App;
 
