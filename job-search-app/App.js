@@ -62,6 +62,7 @@ function MainTabNavigator() {
           component={MapScreen} 
           options={{
             tabBarLabel: 'Map',
+          
           }}
       />
       <Tab.Screen 

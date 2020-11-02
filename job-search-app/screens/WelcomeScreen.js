@@ -16,9 +16,9 @@ function WelcomeScreen(props) {
 
     useEffect(() => {
         (async function fetchToken() {
-            let token = await AsyncStorage.getItem('fb_token');
-            setToken(token);
-            if (token) {
+            let fbToken = await AsyncStorage.getItem('fb_token');
+            setToken(fbToken);
+            if (fbToken) {
                 props.navigation.navigate('main', {screen: 'MapScreen'});
                 setToken(  token );
             } else {
