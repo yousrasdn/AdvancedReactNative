@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Provider } from 'react-redux';
 
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -13,8 +14,7 @@ import MapScreen from './screens/MapScreen';
 import DeckScreen from './screens/DeckScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import ReviewScreen from './screens/ReviewScreen';
-import { color } from 'react-native-reanimated';
-
+import store from './store';
 
 
 const Tab = createBottomTabNavigator();
@@ -22,32 +22,35 @@ const Stack = createStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen 
-            name="welcome" 
-            component={WelcomeScreen} 
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen 
+              name="welcome" 
+              component={WelcomeScreen} 
+              options={{
+                tabBarLabel: 'Home',
+              }}
+          />
+          <Tab.Screen 
+            name="auth" 
+            component={AuthScreen} 
             options={{
-              tabBarLabel: 'Home',
+              tabBarLabel: 'Auth',
+        
             }}
-        />
-        <Tab.Screen 
-          name="auth" 
-          component={AuthScreen} 
-          options={{
-            tabBarLabel: 'Auth',
-          }}
-        />
-        <Tab.Screen 
-          name="main" 
-          component={MainTabNavigator} 
-          options={{
-            tabBarLabel: 'Main',
-          }}
-        />
+          />
+          <Tab.Screen 
+            name="main" 
+            component={MainTabNavigator} 
+            options={{
+              tabBarLabel: 'Main',
+            }}
+          />
 
-      </Tab.Navigator>
-    </NavigationContainer>
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

@@ -1,7 +1,7 @@
   
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppLoading } from 'expo';
 import Slides from '../components/Slides';
 
@@ -11,17 +11,35 @@ const SLIDE_DATA = [
     { text: 'Set your location, then swipe away', color: '#03A9F4' }
 ];
 
-const WelcomeScreen = ({navigation: { navigate }}) => {
+function WelcomeScreen(props) {
+    const [token, setToken] = useState(null);
 
-    const onSlidesComplete = () => {
-        navigate('auth');
-    };
+    useEffect(() => {
+        (async function fetchToken() {
+            let token = await AsyncStorage.getItem('fb_token');
+            setToken(token);
+            if (token) {
+                props.navigation.navigate('main', {screen: 'MapScreen'});
+                setToken(  token );
+            } else {
+                setToken(null);
+            }
+        })();
+    }, []);
 
-    return (<Slides
-            data={SLIDE_DATA}
-            onComplete={onSlidesComplete} 
-        />
+    onSlidesComplete = () => {
+     props.navigation.navigate('auth');
+    }
+
+
+    if (_.isNull(token)) {
+        return <AppLoading />;
+    }
+
+    return (
+        <Slides data={SLIDE_DATA} onComplete={onSlidesComplete} />
     );
-};
+   
+}
 
-export default WelcomeScreen;       
+export default WelcomeScreen;
