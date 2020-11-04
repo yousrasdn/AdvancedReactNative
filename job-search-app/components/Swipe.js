@@ -102,7 +102,7 @@ class Swipe extends Component {
         return (
           <Animated.View
             key={item[this.props.keyProp]}
-            style={[this.getCardStyle(), styles.cardStyle, { zIndex: 99 }]}
+            style={[this.getCardStyle(), { zIndex: 99, position: 'absolute', width: SCREEN_WIDTH }]}
             {...this.state.panResponder.panHandlers}
           >
             {this.props.renderCard(item)}
@@ -113,7 +113,7 @@ class Swipe extends Component {
       return (
         <Animated.View
           key={item[this.props.keyProp]}
-          style={[styles.cardStyle, { top: 10 * (i - this.state.index), zIndex: -i }]}
+          style={[{ position: 'absolute', width: SCREEN_WIDTH, top: 10 * (i - this.state.index), zIndex: -i }]}
         >
           {this.props.renderCard(item)}
         </Animated.View>
@@ -132,11 +132,6 @@ class Swipe extends Component {
   }
 }
 
-const styles = {
-  cardStyle: {
-    position: 'absolute',
-    width: SCREEN_WIDTH
-  }
-};
+
 
 export default Swipe;

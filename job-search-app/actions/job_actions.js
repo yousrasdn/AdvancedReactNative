@@ -32,10 +32,14 @@ export const fetchJobs = ({longitude, latitude}, callback) => {
             const url = `${GITHUB_BASE_URL}lat=${latitude}&long=${longitude}`;
  
             let {data} = await axios.get(url);
-            console.log(data)
+            
             dispatch({
                 type: FETCH_JOBS,
-                payload: data
+                payload: data.map(d => {
+                  d.longitude = longitude;
+                  d.latitude = latitude;
+                  return d;
+                })
             });
             callback();
  
