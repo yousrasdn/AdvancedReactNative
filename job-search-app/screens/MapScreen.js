@@ -6,7 +6,7 @@ import { Button, Icon } from 'react-native-elements';
 
 import * as actions from '../actions';
 
-function MapScreen() {
+function MapScreen({fetchJobs, navigation }) {
 
     const [mapLoaded, setMapLoader] = useState(false);
     const [region, setRegion] = useState({
@@ -18,27 +18,52 @@ function MapScreen() {
 
     useEffect(() => {
         setMapLoader(true);
-        // setRegion({
-        //     longitude: -122,
-        //     latitude: 37,
-        //     longitudeDelta: 0.04,
-        //     latitudeDelta: 0.09
-        // });
     }, []);
 
     const onRegionChangeComplete = (region) => {
-        setRegion({ region });
+        setRegion(region);
+    }
+
+    const onButtonPress = () => {
+      fetchJobs(region, () => {
+       navigation.navigate('deck');
+      });
     }
     
+    if (!mapLoaded) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" />
+          </View>
+        );
+    }
 
-    return ( <View style={{ flex: 1 }}>
+    return (<View style={{ flex: 1 }}>
         <MapView
           region={region}
           style={{ flex: 1 }}
           onRegionChangeComplete={onRegionChangeComplete}
         />
-       
+        <View style={styles.buttonContainer}>
+          <Button
+            large
+            title="Search This Area"
+            backgroundColor="#009688"
+            icon={{ name: 'search' }}
+            onPress={onButtonPress}
+          />
+        </View>
       </View>)
 };
 
-export default MapScreen;
+
+const styles = {
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0
+  }
+}
+
+export default connect(null, actions)(MapScreen);

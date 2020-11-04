@@ -23,16 +23,26 @@ const buildJobsUrl = (zip) => {
   return `${JOB_ROOT_URL}${query}`;
 };
 
-export const fetchJobs = (region, callback) => async (dispatch) => {
-  try {
-    let zip = await reverseGeocode(region);
-    const url = buildJobsUrl(zip);
-    let { data } = await axios.get(url);
-    dispatch({ type: FETCH_JOBS, payload: data });
-    callback();
-  } catch(e) {
-    console.error(e);
-  }
+const GITHUB_BASE_URL = 'https://jobs.github.com/positions.json?';
+ 
+export const fetchJobs = ({longitude, latitude}, callback) => {
+ 
+    return async (dispatch) => {
+        try {
+            const url = `${GITHUB_BASE_URL}lat=${latitude}&long=${longitude}`;
+ 
+            let {data} = await axios.get(url);
+            console.log(data)
+            dispatch({
+                type: FETCH_JOBS,
+                payload: data
+            });
+            callback();
+ 
+        } catch (err) {
+            console.log("Something went wrong... ", err);
+        }
+    }
 };
 
 export const likeJob = (job) => {
