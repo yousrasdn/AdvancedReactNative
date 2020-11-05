@@ -26,11 +26,13 @@ const buildJobsUrl = (zip) => {
 const GITHUB_BASE_URL = 'https://jobs.github.com/positions.json?';
  
 export const fetchJobs = ({longitude, latitude}, callback) => {
- 
+ console.log('longitude  = ', longitude);
+ console.log('latitude  = ', latitude);
+
     return async (dispatch) => {
         try {
             const url = `${GITHUB_BASE_URL}lat=${latitude}&long=${longitude}`;
- 
+ console.log(url)
             let {data} = await axios.get(url);
             
             dispatch({
